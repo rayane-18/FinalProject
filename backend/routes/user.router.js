@@ -2,12 +2,22 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const newUser = new User(req.body);
-  const savedUser = await newUser.save();
   try {
+    const newUser = new User(req.body);
+    const savedUser = await newUser.save();
     res.status(200).json(savedUser);
   } catch (err) {
-    res.status(400).json(err);
+    if (err.code === 11000 && err.keyPattern && err.keyValue) {
+      // Duplicate key error (E11000)
+      const duplicateField = Object.keys(err.keyPattern)[0];
+      const duplicateValue = err.keyValue[duplicateField];
+      res.status(400).json({
+        error: `Duplicate key error: ${duplicateField} '${duplicateValue}' already exists.`,
+      });
+    } else {
+      // Other errors
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 };
 

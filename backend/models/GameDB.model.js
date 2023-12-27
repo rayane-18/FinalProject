@@ -1,60 +1,33 @@
 const mongoose = require("mongoose");
-
-const gameDB_model = mongoose.Schema({
-  id: {
+const gameDBSchema = mongoose.Schema({
+  username: {
     type: String,
     required: true,
+    index: true, // Add an index on the username field
   },
-  region: {
-    type: String,
-    required: true,
-  },
-  languages: {
-    type: String,
-    required: false,
-  },
-  locale: {
-    title: {
-      type: String,
-      required: false,
-    },
-    synopsis: {
-      type: String,
-      required: false,
-    },
-  },
-  publisher: {
-    type: String,
-    required: false,
-  },
-  date: {
-    type: String,
-    required: false,
-  },
-  wifi: {
-    type: String,
-    required: false,
-  },
-  input: {
+  ids: {
     control: [
       {
-        type: String,
-        required: false,
-      },
-      {
-        type: String,
-        required: false,
+        gameid: {
+          type: String,
+          required: false,
+        },
+        rating: {
+          type: String,
+          required: false,
+        },
+        status: {
+          type: String,
+          enum: ["playing", "completed", "plan to play", "dropped"],
+          required: false,
+        },
+        timePlayed: {
+          type: Number, // Change to Number for seconds
+          required: false,
+        },
       },
     ],
   },
-  mode: {
-    type: String,
-    required: false,
-  },
-  rom: {
-    type: String,
-    required: false,
-  },
 });
 
-module.exports = mongoose.model("gameDB", gameDB_model);
+module.exports = mongoose.model("gameDB", gameDBSchema);

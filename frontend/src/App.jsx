@@ -6,6 +6,7 @@ import Browse from "./pages/Browse";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
 export const App = () => {
   return (
     <div>
@@ -15,6 +16,7 @@ export const App = () => {
           <Route path="/home" element={<Frontpage />} />
           <Route path="/Mygames" element={<MyGames />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/Games/:id" element={<GameDetails />} />
           <Route path="*" element={<NoPage />} />

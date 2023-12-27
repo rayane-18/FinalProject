@@ -3,70 +3,50 @@ import axios from "axios";
 import "./MyGames.css";
 import { Frontpage } from "./Frontpage";
 import LocalGameDB from "../assets/switchtdb.json";
-//import { jwtDecode } from "jwt-decode";
-import { useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 const itemsPerPage = 5;
-//console.log(jwtDecode(localStorage.getItem("accessToken")));
 const Mygames = () => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const [gameData, setGameData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [newGame, setNewGame] = useState({
-    // Initialize with default values or leave empty based on your schema
-  });
-  const [updateGameId, setUpdateGameId] = useState(null);
-  const addGame = async () => {
-    try {
-      // Find the game in the local database using the newGame.id
-      const foundGame = LocalGameDB.find((game) => game.id === newGame.id);
-
-      // If the game is found, upload it to the server
-      if (foundGame) {
-        await axios.post("http://localhost:4000/postGame", foundGame);
-        setNewGame({});
-      } else {
-        console.error("Game not found in local database.");
-      }
-    } catch (error) {
-      console.error("Error adding game:", error);
-    }
-  };
-  const deleteGame = async (id) => {
-    console.log(id);
-    try {
-      await axios.delete(`http://localhost:4000/deleteGame/${id}`);
-    } catch (error) {
-      console.error("Error deleting game:", error);
-    }
-  };
-  const updateGame = async () => {
-    try {
-      await axios.put(
-        `"http://localhost:4000/updateGame/${updateGameId}`,
-        newGame
-      );
-      setUpdateGameId(null);
-      setNewGame({});
-    } catch (error) {
-      console.error("Error updating game:", error);
-    }
-  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/getAllGames");
-        const games = response.data;
+        const response = await axios.get(
+          "http://localhost:4000/getGameData/" +
+            jwtDecode(localStorage.getItem("accessToken")).user.username
+        );
+        //const syaya = LocalGameDB.find((game) => game.id === gameID.ids.gameid);
+        //const { yaya } = gaemID;
+
+        //console.log(yaya);
+        const resp = response.data.ids.control;
+        const games = resp.map((game) => {
+          const localGame = LocalGameDB.find((g) => g.id === game.gameid);
+          return {
+            id: game.gameid, // Set id to gameid
+            ...localGame, // Add the local data if found
+            ...game,
+            locale: {
+              title: localGame?.locale?.title || "", // Add default empty value for title if not found
+            },
+            // Add other fields with default empty values as needed
+          };
+        });
+        console.log(games);
         setGameData(games);
         setTotalPages(Math.ceil(games.length / itemsPerPage));
       } catch (error) {
         console.error("Error fetching game data:", error);
       }
+      const accessToken = localStorage.getItem("accessToken");
+      setLoggedIn(!!accessToken);
     };
 
     fetchData();
-  }, [newGame]); // Update the game data whenever a new game is added
+  }, [gameData]); // Update the game data whenever a new game is added
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -76,12 +56,8 @@ const Mygames = () => {
     for (let i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
     }
-
     return (
       <div className="pagination">
-        <div>
-          {isLoggedIn ? "Welcome! You are logged in." : "You are logged out."}
-        </div>
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -136,61 +112,36 @@ const Mygames = () => {
 
     return gameData.slice(startIndex, endIndex).map((game) => (
       <div key={game.id} className="game-card">
-        <h3>{game.locale.title}</h3>
+        {game.locale.title && <h3>{game.locale.title}</h3>}
         <Link to={`/Games/${game.id}`}>
-          {" "}
           <img
             src={`./src/assets/switch/${game.id}.jpg`}
             alt={game.locale.title}
           />
         </Link>
-        <p>Region: {game.region}</p>
-        <p>Languages: {game.languages}</p>
-        <p>Developer: {game.developer}</p>
-        <p>Publisher: {game.publisher}</p>
-        <p>Genre: {game.genre}</p>
-        <button onClick={() => setUpdateGameId(game.id)}>Update</button>
-        <button onClick={() => deleteGame(game.id)}>Delete</button>
+        {game.region && <p>Region: {game.region}</p>}
+        {game.languages && <p>Languages: {game.languages}</p>}
+        {game.developer && <p>Developer: {game.developer}</p>}
+        {game.publisher && <p>Publisher: {game.publisher}</p>}
+        {game.genre && <p>Genre: {game.genre}</p>}
       </div>
     ));
   };
 
-  return (
+  return isLoggedIn ? (
     <div>
       <Frontpage />
       <div>
         <h2>Game List</h2>
         {/* Add Game Form */}
-        <div>
-          <h3>Add Game</h3>
-          <form>
-            {/* Your input fields for adding a new game */}
-            <button type="button" onClick={addGame}>
-              Add Game
-            </button>
-          </form>
-        </div>
-
-        {/* Update Game Form */}
-        {updateGameId && (
-          <div>
-            <h3>Update Game</h3>
-            <form>
-              {/* Your input fields for updating the selected game */}
-              <button type="button" onClick={updateGame}>
-                Update Game
-              </button>
-            </form>
-          </div>
-        )}
-
         <div className="game-list">{renderGames()}</div>
         {renderPagination()}
       </div>
     </div>
+  ) : (
+    <button>You are logged out.</button>
   );
 };
-
 export default Mygames;
 /*import { useState, useEffect } from "react";
 import AddGameForm from "./AddGameForm";

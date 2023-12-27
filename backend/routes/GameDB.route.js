@@ -1,22 +1,40 @@
 const GameDB = require("../models/GameDB.model.js");
 
-const postGame = async (req, res) => {
-  const addGame = new GameDB(req.body);
-  const savedGame = await addGame.save();
+const getGameData = async (req, res) => {
+  const { username } = req.params;
 
   try {
-    res.status(200).json(savedGame);
+    // Find data for the specified username
+    const userData = await GameDB.findOne({ username });
+
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(userData);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
+module.exports = { getGameData };
+/*
 const getAllGames = async (req, res) => {
-  const allData = await GameDB.find();
+  const { username } = req.params;
   try {
+    const allData = await GameDB.find({ username });
     res.status(200).json(allData);
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ message: err.message });
+  }
+};
+const getAllGames = async (req, res) => {
+  const username = req.params.id;
+  try {
+    const allData = await GameDB.findById({ username: username });
+    res.status(200).json(allData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 const getGameById = async (req, res) => {
@@ -59,5 +77,6 @@ const updateGame = async (req, res) => {
     res.status(500).json({ message: err });
   }
 };
-
 module.exports = { postGame, getAllGames, deleteGame, updateGame, getGameById };
+
+*/

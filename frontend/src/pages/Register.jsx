@@ -22,31 +22,31 @@ const Register = () => {
 
       localStorage.setItem("accessToken", accessToken);
       console.log(localStorage.getItem("accessToken", user));
-      navigate("/MyGames");
+      navigate("/Login");
     } catch (error) {
       setError("Invalid credentials");
     }
   };
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Register</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSignup}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <br />
+      <form onSubmit={handleSignup} autoComplete="off">
         <label>
           Email:
           <input
             type="email"
             value={email}
             onChange={(e) => setemail(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <br />

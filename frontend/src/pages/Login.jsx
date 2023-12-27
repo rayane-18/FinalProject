@@ -1,4 +1,3 @@
-// Login.js
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
@@ -17,10 +16,10 @@ const Login = () => {
         username,
         password,
       });
-      const { accessToken, user } = response.data;
+      const { accessToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
       console.log(localStorage.getItem("accessToken"));
-      console.log(jwtDecode(localStorage.getItem("accessToken"), user));
+      console.log(jwtDecode(localStorage.getItem("accessToken")).user.username);
       navigate("/MyGames");
       // You may want to store additional user information in the localStorage or global state
       // Redirect to the dashboard or any other route upon successful login

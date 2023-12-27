@@ -1,16 +1,15 @@
-import "./Frontpage.css";
-import { useDispatch } from "react-redux";
-import { logout } from "../actions/authActions";
+import { useEffect, useState } from "react";
+
 export const Frontpage = () => {
-  const dispatch = useDispatch();
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check the login status whenever the component mounts or the login status changes
+    const accessToken = localStorage.getItem("accessToken");
+    setLoggedIn(!!accessToken);
+  }, []);
 
   const handleLogout = () => {
-    // Dispatch the logout action
-    dispatch(logout());
-  };
-
-  // const [Logout, setLogout] = useState("");
-  /* const handleLogout = () => {
     // Perform any additional cleanup or API calls for logout if needed
 
     // Remove the access token from local storage
@@ -18,18 +17,22 @@ export const Frontpage = () => {
 
     // Update the state to reflect that the user is not logged in
     setLoggedIn(false);
-  };*/
-  localStorage.removeItem("accessToken");
+  };
   return (
     <div className="topnav">
-      <button onClick={handleLogout}>Logout</button>
       <a className="active" href="/home">
         Home
       </a>
       <a href="/Mygames">Mygames</a>
       <a href="/Login">Login</a>
       <a href="/Browse">Browse</a>
+      <a href="/Login">
+        {isLoggedIn ? (
+          <button onClick={handleLogout}>Logout</button>
+        ) : (
+          <button>You are logged out.</button>
+        )}
+      </a>
     </div>
   );
 };
-// <button onClick={handleLogout}>Logout</button>
