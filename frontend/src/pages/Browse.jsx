@@ -4,8 +4,8 @@ import axios from "axios"; // Don't forget to import axios
 import { Frontpage } from "./Frontpage";
 import gameData from "../assets/switchtdb.json";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Correct import statement
-
+import { jwtDecode } from "jwt-decode";
+import "./Browser.css";
 const itemsPerPage = 5;
 const Browse = () => {
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ const Browse = () => {
         <h3>{game.locale.title}</h3>
 
         {/* Move Add Game form below each game */}
-        <div>
+        <div className="form-container">
           {" "}
           {isGameInLibrary(game.id) ? (
             <button onClick={() => navigate("/MyGames")}>
@@ -121,43 +121,6 @@ const Browse = () => {
             </button>
           ) : (
             <button onClick={() => handleToggleForm(game.id)}>Add Game</button>
-          )}
-          {isFormVisible && (
-            <div>
-              {/* Your form goes here */}
-              <form onSubmit={handleSubmit}>
-                {/* Remove the gameid field */}
-                {/* ... other fields ... */}
-                <label>
-                  Rating:
-                  <input
-                    type="text"
-                    name="rating"
-                    value={formData.rating}
-                    onChange={handleChange}
-                  />
-                </label>
-                <label>
-                  Status:
-                  <input
-                    type="text"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                  />
-                </label>
-                <label>
-                  Time Played:
-                  <input
-                    type="text"
-                    name="timePlayed"
-                    value={formData.timePlayed}
-                    onChange={handleChange}
-                  />
-                </label>
-                <button type="submit">Submit</button>
-              </form>
-            </div>
           )}
         </div>
       </div>
@@ -227,7 +190,49 @@ const Browse = () => {
 
         <div className="game-list">{renderGames()}</div>
         {renderPagination()}
-      </div>
+      </div>{" "}
+      {isFormVisible && (
+        <div className="form-overlay">
+          <div className="form-card">
+            <button
+              className="close-button"
+              onClick={() => setFormVisibility(false)}
+            >
+              X
+            </button>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Rating:
+                <input
+                  type="text"
+                  name="rating"
+                  value={formData.rating}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Status:
+                <input
+                  type="text"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Time Played:
+                <input
+                  type="text"
+                  name="timePlayed"
+                  value={formData.timePlayed}
+                  onChange={handleChange}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
