@@ -47,25 +47,24 @@ async function addGame(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-async function checkGame(req, res) {
-  const { username, gameid } = req.params;
-
+async function checkGame(username, gameid) {
   try {
     const userData = await GameDB.findOne({ username });
 
     if (!userData) {
       // If user data doesn't exist, the game definitely doesn't exist
-      return res.json({ exists: false });
+      return false;
     }
 
     const gameExists = userData.ids.control.some(
       (game) => game.gameid === gameid
     );
 
-    res.json({ exists: true });
+    return gameExists;
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    // Handle the error appropriately, you might want to throw it or return a specific value
+    throw err;
   }
 }
 
@@ -74,7 +73,8 @@ async function removeGame(req, res) {
 
   try {
     // Check if the game exists
-    const { exists } = await checkGame(req, res);
+    const exists = await checkGame(username, gameid);
+
     if (!exists) {
       return res.status(404).json({ message: "Game not found" });
     }

@@ -53,8 +53,3 @@ const GameDetails = () => {
 };
 
 export default GameDetails;
-/*<p>Region: {gameDetails.region}</p>
-      <p>Languages: {gameDetails.languages}</p>
-      <p>Developer: {gameDetails.developer}</p>
-      <p>Publisher: {gameDetails.publisher}</p>
-      <p>Genre: {gameDetails.genre}</p> */
