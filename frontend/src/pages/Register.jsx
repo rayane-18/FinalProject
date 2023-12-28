@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");

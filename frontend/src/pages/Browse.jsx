@@ -9,7 +9,6 @@ import "./Browser.css";
 const itemsPerPage = 20;
 const Browse = () => {
   const navigate = useNavigate();
-
   const [ids, setids] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +64,7 @@ const Browse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    navigate("/Mygames");
     try {
       const username = jwtDecode(localStorage.getItem("accessToken")).user
         .username;
@@ -116,7 +116,7 @@ const Browse = () => {
         <div className="form-container">
           {" "}
           {isGameInLibrary(game.id) ? (
-            <button onClick={() => navigate("/MyGames")}>
+            <button onClick={() => navigate("/Mygames")}>
               Already in library
             </button>
           ) : (
