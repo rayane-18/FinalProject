@@ -18,10 +18,6 @@ const Mygames = () => {
           "http://localhost:4000/getGameData/" +
             jwtDecode(localStorage.getItem("accessToken")).user.username
         );
-        //const syaya = LocalGameDB.find((game) => game.id === gameID.ids.gameid);
-        //const { yaya } = gaemID;
-
-        //console.log(yaya);
         const resp = response.data.ids.control;
         const games = resp.map((game) => {
           const localGame = LocalGameDB.find((g) => g.id === game.gameid);

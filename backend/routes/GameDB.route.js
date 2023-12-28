@@ -16,8 +16,112 @@ const getGameData = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+async function addGame(req, res) {
+  const { username } = req.params;
+  const { gameInfo } = req.body;
 
-module.exports = { getGameData };
+  try {
+    // Find or create data for the specified username
+    let userData = await GameDB.findOne({ username });
+
+    if (!userData) {
+      userData = new GameDB({ username });
+    }
+
+    // Add or update game information
+    if (!userData.ids) {
+      userData.ids = { control: [] };
+    }
+
+    userData.ids.control.push({
+      gameid: gameInfo.gameid,
+      rating: gameInfo.rating,
+      status: gameInfo.status,
+      timePlayed: gameInfo.timePlayed,
+    });
+    // Save the updated user data
+    await userData.save();
+
+    res.status(200).json({ message: "Game data added successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+async function checkGame(req, res) {
+  const { username, gameid } = req.params;
+
+  try {
+    const userData = await GameDB.findOne({ username });
+
+    if (!userData) {
+      // If user data doesn't exist, the game definitely doesn't exist
+      return res.json({ exists: false });
+    }
+
+    const gameExists = userData.ids.control.some(
+      (game) => game.gameid === gameid
+    );
+
+    res.json({ exists: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function removeGame(req, res) {
+  const { username, gameid } = req.params;
+
+  try {
+    // Check if the game exists
+    const { exists } = await checkGame(req, res);
+    if (!exists) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+
+    // Remove the game
+    await GameDB.updateOne(
+      { username },
+      { $pull: { "ids.control": { gameid } } }
+    );
+
+    res.status(200).json({ message: "Game removed successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function updateGame(req, res) {
+  const { username, gameid } = req.params;
+  const { rating, status, timePlayed } = req.body;
+
+  try {
+    // Check if the game exists
+    const { exists } = await checkGame(req, res);
+    if (!exists) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+
+    // Prepare the update fields
+    const updateFields = {};
+    if (rating) updateFields["ids.control.$.rating"] = rating;
+    if (status) updateFields["ids.control.$.status"] = status;
+    if (timePlayed) updateFields["ids.control.$.timePlayed"] = timePlayed;
+
+    // Update the game
+    await GameDB.updateOne(
+      { username: username, "ids.control.gameid": gameid },
+      { $set: updateFields }
+    );
+
+    res.status(200).json({ message: "Game updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+module.exports = { getGameData, addGame, checkGame, updateGame, removeGame };
 /*
 const getAllGames = async (req, res) => {
   const { username } = req.params;
