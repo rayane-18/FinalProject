@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import axios from "axios"; // Don't forget to import axios
 import { Frontpage } from "./Frontpage";
 import gameData from "../assets/switchtdb.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Correct import statement
 
 const itemsPerPage = 5;
 const Browse = () => {
+  const navigate = useNavigate();
+
   const [ids, setids] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -30,11 +32,9 @@ const Browse = () => {
     };
     fetchData();
   }, []);
-  console.log(ids);
   function isGameInLibrary(id) {
-    // Check if the id exists in the array
     const isFound = ids.some((item) => item.id === id);
-    console.log(isFound);
+
     // Return the result
     return isFound;
   }
@@ -115,8 +115,8 @@ const Browse = () => {
         {/* Move Add Game form below each game */}
         <div>
           {" "}
-          {isGameInLibrary(gameData.id) ? (
-            <button onClick={() => handleToggleForm(game.id)}>
+          {isGameInLibrary(game.id) ? (
+            <button onClick={() => navigate("/MyGames")}>
               Already in library
             </button>
           ) : (
@@ -224,51 +224,6 @@ const Browse = () => {
       <Frontpage />
       <div>
         <h2>Game List</h2>
-        <button onClick={handleToggleForm}>Add Game</button>
-        {isFormVisible && (
-          <div>
-            {/* Your form goes here */}
-            <form onSubmit={handleSubmit}>
-              <label>
-                Game ID:
-                <input
-                  type="text"
-                  name="gameid"
-                  value={formData.gameid}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Rating:
-                <input
-                  type="text"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Status:
-                <input
-                  type="text"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Time Played:
-                <input
-                  type="text"
-                  name="timePlayed"
-                  value={formData.timePlayed}
-                  onChange={handleChange}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        )}
 
         <div className="game-list">{renderGames()}</div>
         {renderPagination()}
