@@ -6,7 +6,7 @@ import gameData from "../assets/switchtdb.json";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./Browser.css";
-const itemsPerPage = 5;
+const itemsPerPage = 20;
 const Browse = () => {
   const navigate = useNavigate();
 

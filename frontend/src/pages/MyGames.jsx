@@ -5,7 +5,7 @@ import { Frontpage } from "./Frontpage";
 import LocalGameDB from "../assets/switchtdb.json";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
-const itemsPerPage = 5;
+const itemsPerPage = 20;
 const Mygames = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [gameData, setGameData] = useState([]);

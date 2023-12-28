@@ -1,7 +1,3 @@
-.form-container {
-  position: relative;
-}
-
 .form-overlay {
   position: fixed;
   top: 0;
@@ -16,31 +12,21 @@
 
 .form-card {
   z-index: 1;
-  background: white;
+  background: orange; /* Set this to your desired background color */
   padding: 10px;
   width: 250px;
   height: 300px;
-  /* Center the form card within the overlay */
+  position: relative; /* Ensure relative positioning for child elements */
+}
+
+.close-button {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* Add any other styles you want for the form card */
-}
-
-/* Style for the area outside the form card */
-.form-overlay:before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent; /* Set this to your desired color */
-  z-index: 0;
-}
-
-/* Hide the form card when clicking outside it */
-.form-overlay:hover .form-card {
-  display: none;
+  top: -20px;
+  right: -30px;
+  border-radius: 30%;
+  cursor: pointer;
+  background: firebrick;
+  border: none;
+  font-size: 16px;
+  color: #fff;
 }
