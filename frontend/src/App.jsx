@@ -6,13 +6,11 @@ import Browse from "./pages/Browse";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Search from "./pages/Search";
 export const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/Search/:id" element={<Search />}></Route>
           <Route index element={<Login />} />
           <Route path="/home" element={<Frontpage />} />
           <Route path="/Mygames/:page" element={<MyGames />} />

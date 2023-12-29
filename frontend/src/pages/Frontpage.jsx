@@ -24,7 +24,6 @@ export const Frontpage = () => {
       </a>
       <a href="/Mygames/1">Mygames</a>
       <a href="/Browse/1">Browse</a>
-      <a href="/Search">Search</a>
       <a href="/Login">
         {isLoggedIn ? (
           <button onClick={handleLogout}>Logout</button>
