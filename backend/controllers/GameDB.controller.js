@@ -4,11 +4,13 @@ const {
   checkGame,
   updateGame,
   removeGame,
+  getsingleGameData,
 } = require("../routes/GameDB.route");
 const router = require("express").Router();
 router.get("/getGameData/:username", getGameData);
 router.post("/addGame/:username", addGame);
 router.get("/checkGame/:username/:gameid", checkGame);
+router.get("/getsingleGameData/:username/:gameid", getsingleGameData);
 router.delete("/removeGame/:username/:gameid", removeGame);
 router.patch("/updateGame/:username/:gameid", updateGame);
 

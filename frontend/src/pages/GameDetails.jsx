@@ -1,53 +1,77 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import gameData from "../assets/switchtdb.json";
+import { jwtDecode } from "jwt-decode";
 import { Frontpage } from "./Frontpage";
+import LocalGameDB from "../assets/switchtdb.json";
+
 const GameDetails = () => {
   const { id } = useParams();
   const [gameDetails, setGameDetails] = useState(null);
-  const yourgameDetails = gameData.find((gameDetails) => id === gameDetails.id);
-  console.log(yourgameDetails);
+  const handleRemoveGame = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:4000/removeGame/${
+          jwtDecode(localStorage.getItem("accessToken")).user.username
+        }/${id}`
+      );
+    } catch (error) {
+      console.error("Error removing game:", error);
+    }
+  };
   useEffect(() => {
-    const fetchGameDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/getGameById/${id}`
+        // Fetch data from the API
+        const apiResponse = await axios.get(
+          `http://localhost:4000/getsingleGameData/${
+            jwtDecode(localStorage.getItem("accessToken")).user.username
+          }/${id}`
         );
-        setGameDetails(response.data);
+
+        // Update gameDetails with API data
+        setGameDetails(apiResponse.data);
       } catch (error) {
-        console.error("Error fetching game details:", error);
+        console.error("Error fetching game details from API:", error);
       }
     };
 
-    fetchGameDetails();
+    // Fetch local data and API data
+    fetchData();
   }, [id]);
+
   if (!gameDetails) {
     // You might want to add loading state or an error message here
     return (
-      <div key={yourgameDetails.id} className="game-card">
+      <div className="game-card">
         <Frontpage />
-        <img
-          src={`/src/assets/switch/${yourgameDetails.id}.jpg`}
-          alt={yourgameDetails.locale.title}
-        />
+        <p>Loading...</p>
       </div>
     );
   }
+
+  // Find the local game data based on the ID
+  const localGameData = LocalGameDB.find((game) => game.id === id);
+
+  // Merge the details
+  const mergedGameDetails = {
+    ...localGameData,
+    ...gameDetails,
+  };
+  console.log(mergedGameDetails);
+
   return (
-    <div key={yourgameDetails.id} className="game-card">
+    <div className="game-card">
       <Frontpage />
       <img
-        src={`/src/assets/switch/${yourgameDetails.id}.jpg`}
-        alt={yourgameDetails.locale.title}
+        src={`/src/assets/switch/${mergedGameDetails.id}.jpg`}
+        alt={mergedGameDetails.locale.title}
       />
-
-      <img
-        src={`/src/assets/switch/${gameDetails.id}.jpg`}
-        onClick={console.log(`./assets/switch/${gameDetails.id}.jpg`)}
-        alt={gameDetails.locale.title}
-      />
-      <h2>{gameDetails.locale.title}</h2>
+      <h2>{mergedGameDetails.locale.title}</h2>
+      {/* Additional details can be displayed here */}{" "}
+      <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
+        Remove Game
+      </button>
     </div>
   );
 };

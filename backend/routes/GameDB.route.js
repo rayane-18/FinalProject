@@ -121,7 +121,38 @@ async function updateGame(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-module.exports = { getGameData, addGame, checkGame, updateGame, removeGame };
+async function getsingleGameData(req, res) {
+  const { username, gameid } = req.params;
+
+  try {
+    const userData = await GameDB.findOne({ username });
+
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const gameData = userData.ids.control.find(
+      (game) => game.gameid === gameid
+    );
+
+    if (!gameData) {
+      return res.status(404).json({ message: "Game not found for the user" });
+    }
+
+    res.status(200).json(gameData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+module.exports = {
+  getGameData,
+  getsingleGameData,
+  addGame,
+  checkGame,
+  updateGame,
+  removeGame,
+};
 /*
 const getAllGames = async (req, res) => {
   const { username } = req.params;
