@@ -91,6 +91,8 @@ const Browse = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCriteria, setFilterCriteria] = useState(""); // You can set initial filter criteria if needed
 
   const totalPages = Math.ceil(gameData.length / itemsPerPage);
 
@@ -102,7 +104,19 @@ const Browse = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-    return gameData.slice(startIndex, endIndex).map((game) => (
+    // Filter games based on search term and filter criteria
+    const filteredGames = gameData
+      .filter(
+        (game) =>
+          game.locale &&
+          game.locale.title &&
+          game.locale.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          (!filterCriteria ||
+            (game.region && game.region.includes(filterCriteria)))
+      )
+      .slice(startIndex, endIndex);
+
+    return filteredGames.map((game) => (
       <div key={game.id} className="game-card">
         <Link to={`/Games/${game.id}`}>
           <img
@@ -111,8 +125,7 @@ const Browse = () => {
           />
         </Link>
         <h3>{game.locale.title}</h3>
-
-        {/* Move Add Game form below each game */}
+        {/* Move Add Game form below each game */}{" "}
         <div className="form-container">
           {" "}
           {isGameInLibrary(game.id) ? (
@@ -187,7 +200,24 @@ const Browse = () => {
       <Frontpage />
       <div>
         <h2>Game List</h2>
+        <div className="search-filter">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
+          <select
+            value={filterCriteria}
+            onChange={(e) => setFilterCriteria(e.target.value)}
+          >
+            <option value="">All Regions</option>
+            <option value="USA">USA</option>
+            <option value="EUR">EUR</option>
+            {/* Add more options based on your regions */}
+          </select>
+        </div>
         <div className="game-list">{renderGames()}</div>
         {renderPagination()}
       </div>{" "}
