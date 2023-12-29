@@ -20,7 +20,7 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       console.log(localStorage.getItem("accessToken"));
       console.log(jwtDecode(localStorage.getItem("accessToken")).user.username);
-      navigate("/MyGames");
+      navigate("/MyGames/1");
       // You may want to store additional user information in the localStorage or global state
       // Redirect to the dashboard or any other route upon successful login
     } catch (error) {

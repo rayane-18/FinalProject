@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./Frontpage.css";
 export const Frontpage = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
@@ -21,10 +22,9 @@ export const Frontpage = () => {
       <a className="active" href="/home">
         Home
       </a>
-      <a href="/Mygames">Mygames</a>
-      <a href="/Login">Login</a>
-      <a href="/Browse">Browse</a>
-      <a href="/Crock">Crock</a>
+      <a href="/Mygames/1">Mygames</a>
+      <a href="/Browse/1">Browse</a>
+      <a href="/Search">Search</a>
       <a href="/Login">
         {isLoggedIn ? (
           <button onClick={handleLogout}>Logout</button>

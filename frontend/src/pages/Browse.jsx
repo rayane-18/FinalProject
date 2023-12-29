@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios"; // Don't forget to import axios
 import { Frontpage } from "./Frontpage";
 import gameData from "../assets/switchtdb.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./Browser.css";
 const itemsPerPage = 20;
@@ -64,7 +64,7 @@ const Browse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/Mygames");
+    navigate("/Mygames/1");
     try {
       const username = jwtDecode(localStorage.getItem("accessToken")).user
         .username;
@@ -89,16 +89,12 @@ const Browse = () => {
       console.error("Error adding game:", error.message);
     }
   };
-
-  const [currentPage, setCurrentPage] = useState(1);
+  const { page } = useParams();
+  const currentPage = parseInt(page, 10) || 1;
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCriteria, setFilterCriteria] = useState(""); // You can set initial filter criteria if needed
 
   const totalPages = Math.ceil(gameData.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
 
   const renderGames = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -120,16 +116,14 @@ const Browse = () => {
       <div key={game.id} className="game-card">
         <Link to={`/Games/${game.id}`}>
           <img
-            src={`./src/assets/switch/${game.id}.jpg`}
+            src={`/src/assets/switch/${game.id}.jpg`}
             alt={game.locale.title}
           />
         </Link>
         <h3>{game.locale.title}</h3>
-        {/* Move Add Game form below each game */}{" "}
         <div className="form-container">
-          {" "}
           {isGameInLibrary(game.id) ? (
-            <button onClick={() => navigate("/Mygames")}>
+            <button onClick={() => navigate("/Mygames/1")}>
               Already in library
             </button>
           ) : (
@@ -145,52 +139,52 @@ const Browse = () => {
       pageNumbers.push(i);
     }
 
+    const maxPrevPages = 5; // Maximum number of previous pages to display
+
     return (
       <div className="pagination">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
+        <Link
+          to={`/Browse/${currentPage - 1}`}
           disabled={currentPage === 1}
+          className="pagination-link"
         >
           {"<< Previous"}
-        </button>
+        </Link>
 
-        {pageNumbers.map((pageNumber, index) => {
-          if (
-            (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2) ||
-            index === 0 ||
-            index === pageNumbers.length - 1
-          ) {
+        {pageNumbers.map((pageNumber) => {
+          const isWithinRange =
+            pageNumber >= currentPage - maxPrevPages &&
+            pageNumber <= currentPage + 5;
+
+          if (isWithinRange || pageNumber === totalPages || pageNumber === 1) {
             return (
-              <button
+              <Link
                 key={pageNumber}
-                onClick={() => handlePageChange(pageNumber)}
-                className={currentPage === pageNumber ? "active" : ""}
+                to={`/Browse/${pageNumber}`}
+                className={`pagination-link ${
+                  currentPage === pageNumber ? "active" : ""
+                }`}
               >
                 {pageNumber}
-              </button>
+              </Link>
             );
           } else if (
-            index === 1 &&
-            pageNumber > currentPage + 2 &&
-            pageNumbers.length > 5
-          ) {
-            return <span key="ellipsis">...</span>;
-          } else if (
-            index === pageNumbers.length - 2 &&
-            pageNumber < currentPage - 2 &&
-            pageNumbers.length > 5
+            pageNumber === currentPage + 6 &&
+            currentPage + 6 < totalPages
           ) {
             return <span key="ellipsis">...</span>;
           }
+
           return null;
         })}
 
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
+        <Link
+          to={`/Browse/${currentPage + 1}`}
           disabled={currentPage === totalPages}
+          className="pagination-link"
         >
           {"Next >>"}
-        </button>
+        </Link>
       </div>
     );
   };

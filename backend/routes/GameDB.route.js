@@ -136,10 +136,10 @@ async function getsingleGameData(req, res) {
     );
 
     if (!gameData) {
-      return res.status(404).json({ message: "Game not found for the user" });
+      return res.status(200).json({ exists: false });
     }
 
-    res.status(200).json(gameData);
+    res.status(200).json({ exists: true, ...gameData });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });

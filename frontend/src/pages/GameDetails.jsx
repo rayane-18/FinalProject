@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Frontpage } from "./Frontpage";
 import LocalGameDB from "../assets/switchtdb.json";
 
 const GameDetails = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    gameid: "",
+    rating: "",
+    status: "",
+    timePlayed: "",
+  });
   const { id } = useParams();
   const [gameDetails, setGameDetails] = useState(null);
   const handleRemoveGame = async () => {
@@ -19,6 +27,13 @@ const GameDetails = () => {
       console.error("Error removing game:", error);
     }
   };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,7 +43,6 @@ const GameDetails = () => {
             jwtDecode(localStorage.getItem("accessToken")).user.username
           }/${id}`
         );
-
         // Update gameDetails with API data
         setGameDetails(apiResponse.data);
       } catch (error) {
@@ -39,6 +53,31 @@ const GameDetails = () => {
     // Fetch local data and API data
     fetchData();
   }, [id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const username = jwtDecode(localStorage.getItem("accessToken")).user
+        .username;
+
+      const response = await axios.post(
+        `http://localhost:4000/addGame/${username}`,
+        {
+          gameInfo: {
+            gameid: id,
+            rating: formData.rating,
+            status: formData.status,
+            timePlayed: formData.timePlayed,
+          },
+        }
+      );
+      navigate(0);
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors, e.g., show an error message
+      console.error("Error adding game:", error.message);
+    }
+  };
 
   if (!gameDetails) {
     // You might want to add loading state or an error message here
@@ -58,7 +97,7 @@ const GameDetails = () => {
     ...localGameData,
     ...gameDetails,
   };
-  console.log(mergedGameDetails);
+  console.log(mergedGameDetails.exists);
 
   return (
     <div className="game-card">
@@ -68,10 +107,44 @@ const GameDetails = () => {
         alt={mergedGameDetails.locale.title}
       />
       <h2>{mergedGameDetails.locale.title}</h2>
-      {/* Additional details can be displayed here */}{" "}
-      <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
-        Remove Game
-      </button>
+      {mergedGameDetails.exists ? (
+        <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
+          Remove Game
+        </button>
+      ) : (
+        <div>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Rating:
+              <input
+                type="text"
+                name="rating"
+                value={formData.rating}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Status:
+              <input
+                type="text"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Time Played:
+              <input
+                type="text"
+                name="timePlayed"
+                value={formData.timePlayed}
+                onChange={handleChange}
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,19 +6,19 @@ import Browse from "./pages/Browse";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Crock from "./pages/crock";
+import Search from "./pages/Search";
 export const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/crock" element={<Crock />}></Route>
+          <Route path="/Search/:id" element={<Search />}></Route>
           <Route index element={<Login />} />
           <Route path="/home" element={<Frontpage />} />
-          <Route path="/Mygames" element={<MyGames />} />
+          <Route path="/Mygames/:page" element={<MyGames />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/browse" element={<Browse />} />
+          <Route path="/Browse/:page" element={<Browse />} />
           <Route path="/Games/:id" element={<GameDetails />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
