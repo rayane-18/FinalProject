@@ -80,7 +80,7 @@ const Browse = () => {
           },
         }
       );
-
+      navigate(0);
       // Handle success, e.g., show a success message or update the game list
       console.log(response.data);
       setFormVisibility(false);

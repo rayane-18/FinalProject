@@ -4,9 +4,11 @@ import "./MyGames.css";
 import { Frontpage } from "./Frontpage";
 import LocalGameDB from "../assets/switchtdb.json";
 import { jwtDecode } from "jwt-decode";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 const itemsPerPage = 20;
 const Mygames = () => {
+  const navigate = useNavigate();
+
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [gameData, setGameData] = useState([]);
   const { page } = useParams();
@@ -52,7 +54,7 @@ const Mygames = () => {
           jwtDecode(localStorage.getItem("accessToken")).user.username
         }/${gameId}`
       );
-
+      navigate(0);
       fetchData(); // Refetch the updated game data
     } catch (error) {
       console.error("Error removing game:", error);
