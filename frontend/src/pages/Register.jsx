@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -17,11 +18,25 @@ const Register = () => {
         email,
         password,
       });
-      const { accessToken, ...user } = response.data;
-
+      console.log(response.data);
+      //      localStorage.setItem("accessToken", accessToken);
+      //
+      //    console.log(localStorage.getItem("accessToken").username);
+      //  console.log(localStorage.getItem("accessToken").password);
+      const responselogin = await axios.post(
+        "http://localhost:4000/user/login",
+        {
+          username: response.data.username,
+          password: response.data.password,
+        }
+      );
+      const { accessToken } = responselogin.data;
       localStorage.setItem("accessToken", accessToken);
-      console.log(localStorage.getItem("accessToken", user));
-      navigate("/Login");
+      console.log(localStorage.getItem("accessToken"));
+      console.log(jwtDecode(localStorage.getItem("accessToken")).user.username);
+      navigate("/MyGames/1");
+      // You may want to store additional user information in the localStorage or global state
+      // Redirect to the dashboard or any other route upon successful login
     } catch (error) {
       setError("Invalid credentials");
     }
