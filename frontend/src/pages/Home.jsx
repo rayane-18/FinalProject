@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/effect-creative";
+import { Link } from "react-router-dom";
 
 import "./styles.css";
 import "swiper/swiper-bundle.css";
@@ -33,9 +34,10 @@ const Home = () => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 3500,
-          disableOnInteraction: false,
+          delay: 2500,
+          disableOnInteraction: true,
         }}
+        loop={true}
         pagination={{
           clickable: true,
         }}
@@ -55,19 +57,28 @@ const Home = () => {
         style={{ width: "100vw" }} // Set a fixed width for the Swiper container
       >
         <SwiperSlide>
-          <img src={"/src/assets/1.jpg"} style={{ width: "100vw" }} alt="" />
+          <Link to={`/Games/A224A`}>
+            {" "}
+            <img src={"/src/assets/1.jpg"} style={{ width: "100vw" }} alt="" />
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
           {" "}
-          <img src={"/src/assets/2.jpg"} style={{ width: "100vw" }} alt="" />
+          <Link to={`/Games/ADEBA`}>
+            <img src={"/src/assets/2.jpg"} style={{ width: "100vw" }} alt="" />{" "}
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
           {" "}
-          <img src={"/src/assets/3.jpg"} style={{ width: "100vw" }} alt="" />
+          <Link to={`/Games/AKLHA`}>
+            <img src={"/src/assets/3.jpg"} style={{ width: "100vw" }} alt="" />{" "}
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
           {" "}
-          <img src={"/src/assets/4.jpg"} style={{ width: "100vw" }} alt="" />
+          <Link to={`/Games/A3L2A`}>
+            <img src={"/src/assets/4.jpg"} style={{ width: "100vw" }} alt="" />{" "}
+          </Link>
         </SwiperSlide>
       </Swiper>
       <div className="products" id="products">
