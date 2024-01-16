@@ -8,6 +8,17 @@ import { jwtDecode } from "jwt-decode";
 import "./Browser.css";
 const itemsPerPage = 20;
 const Browse = () => {
+  const [selectedFeedback, setSelectedFeedback] = useState("good");
+  console.log(selectedFeedback);
+
+  const handleFeedbackClick = (feedback) => {
+    if (selectedFeedback !== feedback) {
+      document
+        .querySelector(`.feedback li.${selectedFeedback}.active`)
+        .classList.remove("active");
+      setSelectedFeedback(feedback);
+    }
+  };
   const navigate = useNavigate();
   const [ids, setids] = useState([]);
   useEffect(() => {
@@ -39,7 +50,6 @@ const Browse = () => {
   }
   const [formData, setFormData] = useState({
     gameid: "",
-    rating: "",
     status: "",
     timePlayed: "",
   });
@@ -64,7 +74,6 @@ const Browse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/Mygames/1");
     try {
       const username = jwtDecode(localStorage.getItem("accessToken")).user
         .username;
@@ -74,7 +83,7 @@ const Browse = () => {
         {
           gameInfo: {
             gameid: formData.gameid,
-            rating: formData.rating,
+            rating: selectedFeedback,
             status: formData.status,
             timePlayed: formData.timePlayed,
           },
@@ -227,21 +236,117 @@ const Browse = () => {
             <form onSubmit={handleSubmit}>
               <label>
                 Rating:
-                <input
-                  type="text"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleChange}
-                />
+                <ul className="feedback">
+                  <li
+                    className={`angry ${
+                      selectedFeedback === "angry" ? "active" : ""
+                    }`}
+                    onClick={() => handleFeedbackClick("angry")}
+                  >
+                    <div>
+                      <svg className="eye left">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="eye right">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="mouth">
+                        <use xlinkHref="#mouth" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li
+                    className={`sad ${
+                      selectedFeedback === "sad" ? "active" : ""
+                    }`}
+                    onClick={() => handleFeedbackClick("sad")}
+                  >
+                    <div>
+                      <svg className="eye left">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="eye right">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="mouth">
+                        <use xlinkHref="#mouth" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li
+                    className={`ok ${
+                      selectedFeedback === "ok" ? "active" : ""
+                    }`}
+                    onClick={() => handleFeedbackClick("ok")}
+                  >
+                    <div></div>
+                  </li>
+                  <li
+                    className={`good ${
+                      selectedFeedback === "good" ? "active" : ""
+                    }`}
+                    onClick={() => handleFeedbackClick("good")}
+                  >
+                    <div>
+                      <svg className="eye left">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="eye right">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="mouth">
+                        <use xlinkHref="#mouth" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li
+                    className={`happy ${
+                      selectedFeedback === "happy" ? "active" : ""
+                    }`}
+                    onClick={() => handleFeedbackClick("happy")}
+                  >
+                    <div>
+                      <svg className="eye left">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                      <svg className="eye right">
+                        <use xlinkHref="#eye" />
+                      </svg>
+                    </div>
+                  </li>
+                </ul>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ display: "none" }}
+                >
+                  <symbol
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 7 4"
+                    id="eye"
+                  >
+                    <path d="M1,1 C1.83333333,2.16666667 2.66666667,2.75 3.5,2.75 C4.33333333,2.75 5.16666667,2.16666667 6,1"></path>
+                  </symbol>
+                  <symbol
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 18 7"
+                    id="mouth"
+                  >
+                    <path d="M1,5.5 C3.66666667,2.5 6.33333333,1 9,1 C11.6666667,1 14.3333333,2.5 17,5.5"></path>
+                  </symbol>
+                </svg>
               </label>
               <label>
                 Status:
-                <input
-                  type="text"
+                <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                />
+                >
+                  <option value="playing">playing</option>
+                  <option value="completed">completed</option>
+                  <option value="plan to play">plan to play</option>
+                  <option value="dropped">dropped</option>
+                </select>
               </label>
               <label>
                 Time Played:

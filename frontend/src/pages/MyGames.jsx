@@ -25,6 +25,7 @@ const Mygames = () => {
           jwtDecode(localStorage.getItem("accessToken")).user.username
       );
       const resp = response.data.ids.control;
+      console.log(resp);
       const games = resp.map((game) => {
         const localGame = LocalGameDB.find((g) => g.id === game.gameid);
         return {
