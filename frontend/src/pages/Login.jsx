@@ -1,7 +1,11 @@
+// Login.js
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import "./Register.css"; // Import the same CSS file used for Register
+
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -18,41 +22,46 @@ const Login = () => {
       });
       const { accessToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
+
       console.log(localStorage.getItem("accessToken"));
       console.log(jwtDecode(localStorage.getItem("accessToken")).user.username);
+
       navigate("/MyGames/1");
-      // You may want to store additional user information in the localStorage or global state
-      // Redirect to the dashboard or any other route upon successful login
     } catch (error) {
       setError("Invalid credentials");
     }
   };
+
   return (
-    <div>
+    <div className="container">
+      {" "}
+      {/* Apply the container class */}
       <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <label>
+      {error && <p className="error">{error}</p>}
+      <form onSubmit={handleLogin} className="form">
+        <label className="label">
           Username:
           <input
+            className="input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
-        <br />
-        <label>
+        <label className="label">
           Password:
           <input
+            className="input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <br />
-        <button type="submit">Login</button>
-        <Link to="/Register">
-          <button type="button">Register</button>
+        <button type="submit" className="button">
+          Login
+        </button>
+        <Link to="/Register" className="linkButton">
+          Register
         </Link>
       </form>
     </div>
