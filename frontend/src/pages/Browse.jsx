@@ -359,6 +359,10 @@ const Browse = () => {
                   value={formData.status}
                   onChange={handleChange}
                 >
+                  {" "}
+                  <option value="" disabled>
+                    Select status
+                  </option>
                   <option value="playing">playing</option>
                   <option value="completed">completed</option>
                   <option value="plan to play">plan to play</option>
@@ -375,6 +379,9 @@ const Browse = () => {
                 />
               </label>
               <button type="submit">Submit</button>
+              {!formData.status && (
+                <p className="error">Please select a status</p>
+              )}
             </form>
           </div>
         </div>

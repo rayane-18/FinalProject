@@ -13,14 +13,7 @@
 .my-games-container {
   width: 100vw;
 }
-.form-card select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  border: 1px solid #504949; /* Add a subtle border */
-  border-radius: 4px; /* Add rounded corners for input fields */
-}
+
 /* Form card styling */
 .form-card {
   z-index: 1;
@@ -41,6 +34,14 @@
 
 /* Form input styling */
 .form-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  border: 1px solid #504949; /* Add a subtle border */
+  border-radius: 4px; /* Add rounded corners for input fields */
+}
+.form-card select {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;

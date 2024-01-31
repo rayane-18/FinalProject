@@ -33,6 +33,7 @@ const GameDetails = () => {
           jwtDecode(localStorage.getItem("accessToken")).user.username
         }/${id}`
       );
+      navigate(0);
     } catch (error) {
       console.error("Error removing game:", error);
     }
@@ -119,145 +120,167 @@ const GameDetails = () => {
   console.log(mergedGameDetails.exists);
 
   return (
-    <div className="game-card">
+    <div className="game-cards">
       <Frontpage />
-      <img
-        src={`/src/assets/switch/${mergedGameDetails.id}.jpg`}
-        alt={mergedGameDetails.locale.title}
-      />
-      <h2>{mergedGameDetails.locale.title}</h2>
-      {mergedGameDetails.exists ? (
-        <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
-          Remove Game
-        </button>
-      ) : (
-        <div>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Rating:
-              <ul className="feedback">
-                <li
-                  className={`angry ${
-                    selectedFeedback === "angry" ? "active" : ""
-                  }`}
-                  onClick={() => handleFeedbackClick("angry")}
-                >
-                  <div>
-                    <svg className="eye left">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="eye right">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="mouth">
-                      <use xlinkHref="#mouth" />
-                    </svg>
-                  </div>
-                </li>
-                <li
-                  className={`sad ${
-                    selectedFeedback === "sad" ? "active" : ""
-                  }`}
-                  onClick={() => handleFeedbackClick("sad")}
-                >
-                  <div>
-                    <svg className="eye left">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="eye right">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="mouth">
-                      <use xlinkHref="#mouth" />
-                    </svg>
-                  </div>
-                </li>
-                <li
-                  className={`ok ${selectedFeedback === "ok" ? "active" : ""}`}
-                  onClick={() => handleFeedbackClick("ok")}
-                >
-                  <div></div>
-                </li>
-                <li
-                  className={`good ${
-                    selectedFeedback === "good" ? "active" : ""
-                  }`}
-                  onClick={() => handleFeedbackClick("good")}
-                >
-                  <div>
-                    <svg className="eye left">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="eye right">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="mouth">
-                      <use xlinkHref="#mouth" />
-                    </svg>
-                  </div>
-                </li>
-                <li
-                  className={`happy ${
-                    selectedFeedback === "happy" ? "active" : ""
-                  }`}
-                  onClick={() => handleFeedbackClick("happy")}
-                >
-                  <div>
-                    <svg className="eye left">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                    <svg className="eye right">
-                      <use xlinkHref="#eye" />
-                    </svg>
-                  </div>
-                </li>
-              </ul>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ display: "none" }}
-              >
-                <symbol
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 7 4"
-                  id="eye"
-                >
-                  <path d="M1,1 C1.83333333,2.16666667 2.66666667,2.75 3.5,2.75 C4.33333333,2.75 5.16666667,2.16666667 6,1"></path>
-                </symbol>
-                <symbol
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 18 7"
-                  id="mouth"
-                >
-                  <path d="M1,5.5 C3.66666667,2.5 6.33333333,1 9,1 C11.6666667,1 14.3333333,2.5 17,5.5"></path>
-                </symbol>
-              </svg>
-            </label>
-            <label>
-              Status:
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="playing">playing</option>
-                <option value="completed">completed</option>
-                <option value="plan to play">plan to play</option>
-                <option value="dropped">dropped</option>
-              </select>
-            </label>
-            <label>
-              Time Played:
-              <input
-                type="text"
-                name="timePlayed"
-                value={formData.timePlayed}
-                onChange={handleChange}
-              />
-            </label>
-            <button type="submit">Submit</button>
-          </form>
+      <div className="game-details-container">
+        <div className="image-container">
+          <img
+            src={`/src/assets/switch/${mergedGameDetails.id}.jpg`}
+            alt={mergedGameDetails.locale.title}
+          />
         </div>
-      )}
+
+        {mergedGameDetails.exists ? (
+          <div className="details">
+            <h2>{mergedGameDetails.locale.title}</h2>{" "}
+            <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
+              Remove Game
+            </button>
+          </div>
+        ) : (
+          <div className="form-containers">
+            <div>
+              <h2>{mergedGameDetails.locale.title}</h2>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Rating:
+                  <ul className="feedback">
+                    <li
+                      className={`angry ${
+                        selectedFeedback === "angry" ? "active" : ""
+                      }`}
+                      onClick={() => handleFeedbackClick("angry")}
+                    >
+                      <div>
+                        <svg className="eye left">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="eye right">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="mouth">
+                          <use xlinkHref="#mouth" />
+                        </svg>
+                      </div>
+                    </li>
+                    <li
+                      className={`sad ${
+                        selectedFeedback === "sad" ? "active" : ""
+                      }`}
+                      onClick={() => handleFeedbackClick("sad")}
+                    >
+                      <div>
+                        <svg className="eye left">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="eye right">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="mouth">
+                          <use xlinkHref="#mouth" />
+                        </svg>
+                      </div>
+                    </li>
+                    <li
+                      className={`ok ${
+                        selectedFeedback === "ok" ? "active" : ""
+                      }`}
+                      onClick={() => handleFeedbackClick("ok")}
+                    >
+                      <div></div>
+                    </li>
+                    <li
+                      className={`good ${
+                        selectedFeedback === "good" ? "active" : ""
+                      }`}
+                      onClick={() => handleFeedbackClick("good")}
+                    >
+                      <div>
+                        <svg className="eye left">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="eye right">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="mouth">
+                          <use xlinkHref="#mouth" />
+                        </svg>
+                      </div>
+                    </li>
+                    <li
+                      className={`happy ${
+                        selectedFeedback === "happy" ? "active" : ""
+                      }`}
+                      onClick={() => handleFeedbackClick("happy")}
+                    >
+                      <div>
+                        <svg className="eye left">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                        <svg className="eye right">
+                          <use xlinkHref="#eye" />
+                        </svg>
+                      </div>
+                    </li>
+                  </ul>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ display: "none" }}
+                  >
+                    <symbol
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 7 4"
+                      id="eye"
+                    >
+                      <path d="M1,1 C1.83333333,2.16666667 2.66666667,2.75 3.5,2.75 C4.33333333,2.75 5.16666667,2.16666667 6,1"></path>
+                    </symbol>
+                    <symbol
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 18 7"
+                      id="mouth"
+                    >
+                      <path d="M1,5.5 C3.66666667,2.5 6.33333333,1 9,1 C11.6666667,1 14.3333333,2.5 17,5.5"></path>
+                    </symbol>
+                  </svg>
+                </label>
+                <label>
+                  Status:
+                  <select
+                    className="selects"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                  >
+                    {" "}
+                    <option value="" disabled>
+                      Select status
+                    </option>
+                    <option value="playing">playing</option>
+                    <option value="completed">completed</option>
+                    <option value="plan to play">plan to play</option>
+                    <option value="dropped">dropped</option>
+                  </select>
+                </label>
+                <label>
+                  Time Played:
+                  <input
+                    className="inputs"
+                    type="text"
+                    name="timePlayed"
+                    placeholder="must be in seconds"
+                    value={formData.timePlayed}
+                    onChange={handleChange}
+                  />
+                </label>
+                <button type="submit">Submit</button>
+                {!formData.status && (
+                  <p className="error">Please select a status</p>
+                )}
+              </form>
+            </div>
+          </div>
+        )}
+      </div>{" "}
     </div>
   );
 };

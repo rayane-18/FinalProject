@@ -382,3 +382,78 @@ Center & dribbble body {
     }
   }
 }
+.game-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin-top: 100px;
+  width: 100vw;
+}
+
+.game-details-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.details {
+  max-width: 48%;
+}
+
+.image-container {
+  max-width: 48%;
+  margin-right: 10%;
+}
+
+.game-cards img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.form-containers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-containers form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+.selects,
+.inputs {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Style for the dropdown arrow */
+.selects {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+}
+
+/* Optional: Add styling for the submit button on hover */
+button:hover {
+  background-color: #45a049;
+}
