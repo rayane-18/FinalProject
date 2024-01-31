@@ -43,44 +43,46 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Register</h2>
-      {error && <p className="error">{error}</p>}
-      <form className="form" onSubmit={handleSignup} autoComplete="off">
-        <label className="label">
-          Email:
-          <input
-            className="input"
-            type="email"
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-          />
-        </label>
-        <label className="label">
-          Username:
-          <input
-            className="input"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label className="label">
-          Password:
-          <input
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type="submit" className="button">
-          Register
-        </button>
-        <Link to="/Login" className="linkButton">
-          Login
-        </Link>
-      </form>
+    <div className="register-container">
+      <div className="container">
+        <h2>Register</h2>
+        {error && <p className="error">{error}</p>}
+        <form className="form" onSubmit={handleSignup} autoComplete="off">
+          <label className="label">
+            Email:
+            <input
+              className="input"
+              type="email"
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+            />
+          </label>
+          <label className="label">
+            Username:
+            <input
+              className="input"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+          <label className="label">
+            Password:
+            <input
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <button type="submit" className="button">
+            Register
+          </button>
+          <Link to="/Login" className="linkButton">
+            Login
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };

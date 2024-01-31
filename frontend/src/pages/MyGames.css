@@ -1,16 +1,32 @@
+/* Update game list layout */
 .game-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
   gap: 16px;
+  justify-content: center;
 }
-
+.my-games-container {
+  margin-top: 100px; /* Add the desired margin top */
+}
+/* Update game card styling */
 .game-card {
   border: 1px solid #ddd;
   padding: 16px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .game-card img {
   max-width: 100%;
   height: auto;
+}
+
+/* Additional styling for when there are no games */
+.no-games-message {
+  text-align: center;
+  margin-top: 20px; /* Adjust the margin as needed */
+  color: #888;
 }

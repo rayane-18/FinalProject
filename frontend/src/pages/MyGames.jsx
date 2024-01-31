@@ -135,6 +135,25 @@ const Mygames = () => {
             (game.region && game.region.includes(filterCriteria)))
       )
       .slice(startIndex, endIndex);
+    if (filteredGames.length === 0) {
+      // Add a fake game when there are no actual games
+      const fakeGame = {
+        id: "Game not found",
+        locale: { title: "Game not found your list might be empty" },
+        // Add other fake game properties as needed
+      };
+
+      return (
+        <div className="game-card">
+          <h3>{fakeGame.locale.title}</h3>
+          <Link>
+            <img src="/src/assets/GameNotFound.png" alt="" />
+          </Link>
+          <p>This is a fake game</p>
+        </div>
+      );
+    }
+
     return filteredGames.map((game) => (
       <div key={game.id} className="game-card">
         {game.locale.title && <h3>{game.locale.title}</h3>}
@@ -156,7 +175,7 @@ const Mygames = () => {
   };
 
   return isLoggedIn ? (
-    <div>
+    <div className="my-games-container">
       <Frontpage />
       <div>
         <h2>Game List</h2>

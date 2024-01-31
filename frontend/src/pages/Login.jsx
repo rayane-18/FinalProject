@@ -33,37 +33,39 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      {" "}
-      {/* Apply the container class */}
-      <h2>Login</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleLogin} className="form">
-        <label className="label">
-          Username:
-          <input
-            className="input"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label className="label">
-          Password:
-          <input
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type="submit" className="button">
-          Login
-        </button>
-        <Link to="/Register" className="linkButton">
-          Register
-        </Link>
-      </form>
+    <div className="login-container">
+      <div className="container">
+        {" "}
+        {/* Apply the container class */}
+        <h2>Login</h2>
+        {error && <p className="error">{error}</p>}
+        <form onSubmit={handleLogin} className="form">
+          <label className="label">
+            Username:
+            <input
+              className="input"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+          <label className="label">
+            Password:
+            <input
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <button type="submit" className="button">
+            Login
+          </button>
+          <Link to="/Register" className="linkButton">
+            Register
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };

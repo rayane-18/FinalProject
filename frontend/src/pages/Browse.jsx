@@ -120,7 +120,24 @@ const Browse = () => {
             (game.region && game.region.includes(filterCriteria)))
       )
       .slice(startIndex, endIndex);
+    if (filteredGames.length === 0) {
+      // Add a fake game when there are no actual games
+      const fakeGame = {
+        id: "Game not found",
+        locale: { title: "Game not found search somethings else" },
+        // Add other fake game properties as needed
+      };
 
+      return (
+        <div className="game-card">
+          <h3>{fakeGame.locale.title}</h3>
+          <Link>
+            <img src="/src/assets/GameNotFound.png" alt="" />
+          </Link>
+          <p>Game not found</p>
+        </div>
+      );
+    }
     return filteredGames.map((game) => (
       <div key={game.id} className="game-card">
         <Link to={`/Games/${game.id}`}>
@@ -199,7 +216,7 @@ const Browse = () => {
   };
 
   return (
-    <div>
+    <div className="my-games-container">
       <Frontpage />
       <div>
         <h2>Game List</h2>
@@ -349,7 +366,7 @@ const Browse = () => {
                 </select>
               </label>
               <label>
-                Time Played:
+                Time Played (in seconds):
                 <input
                   type="text"
                   name="timePlayed"
