@@ -7,8 +7,6 @@ import LocalGameDB from "../assets/switchtdb.json";
 import "./GameDetails.css";
 const GameDetails = () => {
   const [selectedFeedback, setSelectedFeedback] = useState("good");
-  console.log(selectedFeedback);
-
   const handleFeedbackClick = (feedback) => {
     if (selectedFeedback !== feedback) {
       document
@@ -45,7 +43,6 @@ const GameDetails = () => {
       [name]: value,
     });
   };
-  console.log(formData);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,16 +80,8 @@ const GameDetails = () => {
           },
         }
       );
-      console.log({
-        gameInfo: {
-          gameid: id,
-          rating: selectedFeedback,
-          status: formData.status,
-          timePlayed: formData.timePlayed,
-        },
-      });
+      console.log(response);
       navigate(0);
-      console.log(response.data);
     } catch (error) {
       // Handle errors, e.g., show an error message
       console.error("Error adding game:", error.message);
@@ -100,7 +89,6 @@ const GameDetails = () => {
   };
 
   if (!gameDetails) {
-    // You might want to add loading state or an error message here
     return (
       <div className="game-card">
         <Frontpage />
@@ -117,7 +105,6 @@ const GameDetails = () => {
     ...localGameData,
     ...gameDetails,
   };
-  console.log(mergedGameDetails.exists);
 
   return (
     <div className="game-cards">
@@ -133,6 +120,20 @@ const GameDetails = () => {
         {mergedGameDetails.exists ? (
           <div className="details">
             <h2>{mergedGameDetails.locale.title}</h2>{" "}
+            <p className="synopsis">
+              synopsis :{" "}
+              {mergedGameDetails.synopsis &&
+              mergedGameDetails.synopsis.length > 0
+                ? mergedGameDetails.synopsis
+                : "No synopsis available"}
+            </p>
+            <p className="synopsis">region : {mergedGameDetails.region}</p>
+            <p className="synopsis">
+              languages : {mergedGameDetails.languages}
+            </p>
+            <p className="synopsis">
+              publisher : {mergedGameDetails.publisher}
+            </p>
             <button onClick={() => handleRemoveGame(mergedGameDetails.id)}>
               Remove Game
             </button>
@@ -141,6 +142,16 @@ const GameDetails = () => {
           <div className="form-containers">
             <div>
               <h2>{mergedGameDetails.locale.title}</h2>
+              <p className="synopsis">
+                synopsis : {mergedGameDetails.locale.synopsis}
+              </p>
+              <p className="synopsis">region : {mergedGameDetails.region}</p>
+              <p className="synopsis">
+                languages : {mergedGameDetails.languages}
+              </p>
+              <p className="synopsis">
+                publisher : {mergedGameDetails.publisher}
+              </p>{" "}
               <form onSubmit={handleSubmit}>
                 <label>
                   Rating:
