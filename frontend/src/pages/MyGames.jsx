@@ -149,7 +149,7 @@ const Mygames = () => {
           <Link>
             <img src="/src/assets/GameNotFound.png" alt="" />
           </Link>
-          <p>This is a fake game</p>
+          <p>This is a placeholder</p>
         </div>
       );
     }
