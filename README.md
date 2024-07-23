@@ -1,4 +1,4 @@
-# Final Project for [Course Name]
+# Final Project for FULLSTACKJS
 
 This is the final project for the Fullstack JavaScript course by Code213 https://www.code213.tech/formation-fullstack-js .
 To run the project, make sure you have Node.js, npm, and YAML installed.
